@@ -1,0 +1,70 @@
+[package]
+name = "aces-high"
+version = "0.1.0"
+edition = "2021"
+authors = ["Aces High Team"]
+description = "HD Roguelike WWII Arcade Shooter - WebAssembly Edition"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# WebAssembly bindings
+wasm-bindgen = "0.2"
+web-sys = { version = "0.3", features = [
+    "console",
+    "Window",
+    "Document",
+    "HtmlCanvasElement",
+    "WebGl2RenderingContext",
+    "WebGlBuffer",
+    "WebGlProgram",
+    "WebGlShader",
+    "WebGlTexture",
+    "WebGlUniformLocation",
+    "Performance",
+    "AudioContext",
+    "AudioBuffer",
+    "GainNode",
+    "PannerNode",
+    "KeyboardEvent",
+    "MouseEvent",
+] }
+js-sys = "0.3"
+wasm-bindgen-futures = "0.4"
+
+# Random number generation for WASM
+getrandom = { version = "0.2", features = ["js"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Graphics and Math
+glow = "0.13"
+cgmath = "0.18"
+
+# Utilities
+rand = { version = "0.8", features = ["small_rng"] }
+instant = { version = "0.1", features = ["wasm-bindgen"] }
+
+# Collections
+indexmap = "2.0"
+rustc-hash = "1.1"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"
+
+[profile.release]
+opt-level = "z"     # Optimize for size
+lto = true          # Enable Link Time Optimization
+codegen-units = 1   # Reduce parallel code generation
+panic = "abort"     # Abort on panic instead of unwinding
+strip = true        # Strip symbols from binary
+
+[profile.dev]
+opt-level = 1       # Some optimization for faster builds
+
+[profile.test]
+opt-level = 2       # Optimize tests for performance testing
